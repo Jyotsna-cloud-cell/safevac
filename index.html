@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0d1f3c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SafeEvac">
+<meta name="description" content="SafeEvac — Universal GPS evacuation planning app for any building in India">
+<title>SafeEvac — Universal Building Evacuation System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1f3c;--navy2:#1a3558;--teal:#0f7173;--teal2:#16a29e;--orange:#e85d04;--green:#0a7c59;--red:#b91c1c;--off:#f4f7fb;--gray:#8fa3bf;--text:#0d1f3c;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--navy);color:var(--text);overflow-x:hidden}
+body{display:flex;justify-content:center}
+
+/* ═══ PAYMENT GATE ═══ */
+#paygate{min-height:100vh;background:linear-gradient(160deg,#0d1f3c 0%,#0f3460 60%,#0d1f3c 100%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:28px 16px 40px;width:100%;max-width:460px;overflow-y:auto}
+.pg-logo{width:76px;height:76px;background:var(--teal);border-radius:22px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.pg-logo svg{width:40px;height:40px;fill:none;stroke:white;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pg-title{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:800;color:white;text-align:center;letter-spacing:-1.5px;margin-bottom:3px}
+.pg-tagline{font-size:13px;color:var(--gray);text-align:center;margin-bottom:6px;line-height:1.5}
+.pg-stars{color:#f59e0b;font-size:15px;text-align:center;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:6px}
+.pg-stars span{color:var(--gray);font-size:11px}
+.price-hero{background:white;border-radius:20px;padding:22px 20px;width:100%;margin-bottom:14px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.price-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.price-row{display:flex;align-items:baseline;gap:4px}
+.price-amount{font-size:54px;font-weight:800;color:var(--navy);font-family:'Space Grotesk',sans-serif;line-height:1}
+.price-slash{font-size:13px;color:var(--gray);text-decoration:line-through;margin-top:3px}
+.price-badge{background:#dcfce7;color:#166534;font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;white-space:nowrap}
+.features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid #f1f5f9}
+.features li{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--navy);line-height:1.5}
+.feat-tick{width:20px;height:20px;min-width:20px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.feat-tick svg{width:11px;height:11px;fill:none;stroke:#166534;stroke-width:2.5;stroke-linecap:round}
+.upi-label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.upi-label svg{width:16px;height:16px;fill:none;stroke:var(--navy);stroke-width:2;stroke-linecap:round}
+.qr-wrapper{background:#f8fafc;border-radius:14px;padding:16px;display:flex;flex-direction:column;align-items:center;margin-bottom:12px;border:1.5px solid #e8edf5}
+.qr-box{width:160px;height:160px;background:white;border-radius:10px;padding:8px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;border:1px solid #e8edf5}
+.qr-box img{width:100%;height:100%;display:block}
+.qr-caption{font-size:11px;color:var(--gray);text-align:center;line-height:1.6}
+.qr-caption strong{color:var(--navy);font-size:12px}
+.upi-id-row{background:#f8fafc;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;border:1.5px solid #e8edf5}
+.upi-id-texts{flex:1}
+.upi-id-tag{font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.upi-id-value{font-size:20px;font-weight:800;color:var(--navy);font-family:'Space Grotesk',sans-serif;letter-spacing:-.3px}
+.copy-btn{background:var(--navy);color:white;border:none;border-radius:9px;padding:9px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.copy-btn.copied{background:var(--green)}
+.apps-label{font-size:11px;color:var(--gray);font-weight:600;text-align:center;margin-bottom:8px}
+.upi-apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.upi-app{background:#f8fafc;border:1.5px solid #e8edf5;border-radius:12px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.upi-app-icon{font-size:26px;line-height:1}
+.upi-app-name{font-size:10px;font-weight:600;color:var(--navy);text-align:center}
+.steps-box{background:#eff6ff;border-radius:12px;padding:14px 14px 10px;margin-bottom:14px}
+.steps-title{font-size:11px;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.step-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.step-dot{width:22px;height:22px;min-width:22px;background:#1e40af;color:white;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-text{font-size:12px;color:#1e3a8a;line-height:1.6}
+.step-text strong{color:#0d1f3c}
+.txn-box{background:white;border-radius:14px;padding:16px;border:1.5px solid #e8edf5;margin-bottom:10px}
+.txn-box-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.txn-box-sub{font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.5}
+.txn-input{width:100%;background:#f8fafc;border:1.5px solid #e8edf5;border-radius:10px;padding:13px 14px;font-size:15px;color:var(--navy);outline:none;font-family:'Space Grotesk',sans-serif;font-weight:600;margin-bottom:10px}
+.activate-btn{width:100%;background:linear-gradient(135deg,var(--orange),#f4845f);color:white;border:none;border-radius:12px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px}
+.activate-btn svg{width:20px;height:20px;fill:none;stroke:white;stroke-width:2.5;stroke-linecap:round}
+.msg{display:none;border-radius:10px;padding:11px 13px;font-size:13px;margin-bottom:10px;align-items:center;gap:8px}
+.msg.show{display:flex}
+.msg.err{background:#fee2e2;color:#991b1b}
+.msg.ok{background:#dcfce7;color:#166534}
+.msg svg{width:18px;height:18px;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.trust-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray)}
+.trust-item svg{width:13px;height:13px;fill:none;stroke:var(--gray);stroke-width:2;stroke-linecap:round}
+.footer-note{font-size:11px;color:var(--gray);text-align:center;line-height:1.9;margin-top:14px}
+.footer-note strong{color:white}
+.spin-ov{display:none;position:fixed;inset:0;background:rgba(13,31,60,.8);z-index:600;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.spin-ov.on{display:flex}
+.spinner{width:44px;height:44px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--teal2);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-txt{color:white;font-size:14px;font-weight:500}
+
+/* ═══ ONBOARDING — first thing after payment ═══ */
+#onboarding{display:none;min-height:100vh;background:var(--off);width:100%;max-width:480px;flex-direction:column}
+#onboarding.show{display:flex}
+.ob-header{background:var(--navy);padding:24px 20px;text-align:center}
+.ob-header-icon{width:52px;height:52px;background:var(--teal);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.ob-header-icon svg{width:28px;height:28px;fill:none;stroke:white;stroke-width:1.8;stroke-linecap:round}
+.ob-header h1{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:white;margin-bottom:4px}
+.ob-header p{font-size:12px;color:var(--gray);line-height:1.6}
+.ob-body{flex:1;padding:20px 18px;overflow-y:auto}
+.ob-section{background:white;border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid #e8edf5}
+.ob-section-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.ob-section-title svg{width:16px;height:16px;fill:none;stroke:var(--teal);stroke-width:2}
+.ob-field{margin-bottom:12px}
+.ob-field label{font-size:12px;font-weight:600;color:var(--navy);display:block;margin-bottom:5px}
+.ob-input{width:100%;background:#f8fafc;border:1.5px solid #e8edf5;border-radius:10px;padding:11px 13px;font-size:14px;color:var(--navy);outline:none;font-family:'Inter',sans-serif}
+.ob-input:focus{border-color:var(--teal);background:white}
+.ob-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gps-fetch-btn{width:100%;background:var(--navy);color:white;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:12px}
+.gps-fetch-btn svg{width:16px;height:16px;fill:none;stroke:white;stroke-width:2}
+.gps-result{display:none;background:#dcfce7;border-radius:10px;padding:10px 12px;font-size:12px;color:#166534;margin-bottom:12px;align-items:center;gap:8px}
+.gps-result.show{display:flex}
+.gps-result svg{width:16px;height:16px;fill:none;stroke:#166534;stroke-width:2;flex-shrink:0}
+.building-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+.bt-option{background:#f8fafc;border:1.5px solid #e8edf5;border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer}
+.bt-option.sel{border-color:var(--teal);background:#e1f5f5}
+.bt-option svg{width:22px;height:22px;fill:none;stroke:var(--navy);stroke-width:1.6;margin-bottom:5px}
+.bt-option.sel svg{stroke:var(--teal)}
+.bt-option-name{font-size:11px;font-weight:600;color:var(--navy)}
+.floor-stepper{display:flex;align-items:center;gap:12px;background:#f8fafc;border:1.5px solid #e8edf5;border-radius:10px;padding:10px 14px}
+.fs-btn{width:32px;height:32px;border-radius:8px;background:white;border:1px solid #e8edf5;font-size:18px;font-weight:600;color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fs-val{flex:1;text-align:center;font-size:16px;font-weight:700;color:var(--navy);font-family:'Space Grotesk',sans-serif}
+.continue-btn{width:100%;background:var(--orange);color:white;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.continue-btn svg{width:18px;height:18px;fill:none;stroke:white;stroke-width:2}
+.skip-link{text-align:center;font-size:12px;color:var(--gray);margin-top:10px;cursor:pointer;text-decoration:underline}
+
+/* ═══ MAIN APP ═══ */
+#app{display:none;min-height:100vh;background:var(--off);flex-direction:column;width:100%;max-width:480px}
+#app.show{display:flex}
+.topbar{background:var(--navy);padding:11px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.tb-logo{width:36px;height:36px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-logo svg{width:20px;height:20px;fill:none;stroke:white;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tb-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:white;line-height:1.2}
+.tb-sub{font-size:10px;color:var(--gray)}
+.live-badge{background:var(--teal);color:white;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;flex-shrink:0;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+.emerg-bar{display:none;background:var(--red);padding:9px 14px;align-items:center;gap:9px;flex-shrink:0}
+.emerg-bar.on{display:flex}
+.emerg-bar-txt{flex:1;font-size:12px;color:white;font-weight:600}
+.emerg-bar-x{background:none;border:none;color:white;font-size:20px;cursor:pointer;padding:0;line-height:1}
+.tabs{display:flex;background:var(--navy);border-top:1px solid #ffffff10;flex-shrink:0}
+.tab{flex:1;padding:9px 3px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border-top:2px solid transparent}
+.tab svg{width:19px;height:19px;fill:none;stroke:#8fa3bf;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab span{font-size:9px;color:#8fa3bf}
+.tab.on svg{stroke:var(--teal2)}.tab.on span{color:var(--teal2)}.tab.on{border-top-color:var(--teal2)}
+.body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.pane{display:none;padding-bottom:24px}.pane.on{display:block}
+.sec-lbl{font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.6px;padding:13px 14px 6px}
+.gps-strip{display:flex;gap:8px;padding:12px 14px 0}
+.gpill{flex:1;background:white;border-radius:12px;padding:10px 11px;display:flex;align-items:center;gap:7px;border:1px solid #e8edf5}
+.gpill svg{width:16px;height:16px;fill:none;stroke:#378add;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+.gpill-lbl{font-size:10px;color:var(--gray)}.gpill-val{font-size:11px;font-weight:600;color:var(--text)}
+.gdot{width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;animation:gdot 1.4s infinite}
+@keyframes gdot{0%,100%{opacity:1}50%{opacity:.2}}
+.map-box{margin:10px 14px 0;border-radius:var(--r);overflow:hidden;position:relative;height:230px;border:1px solid #e8edf5}
+.map-iframe{width:100%;height:100%;border:none}
+.map-badge{position:absolute;top:8px;left:8px;background:var(--navy);color:white;font-size:10px;padding:4px 9px;border-radius:20px;font-weight:600;pointer-events:none;z-index:10;max-width:85%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.you-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:10}
+.you-dot{width:15px;height:15px;background:var(--orange);border-radius:50%;border:3px solid white;position:relative}
+.you-ring{position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--orange);animation:yring 1.8s infinite;opacity:.5}
+@keyframes yring{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.6);opacity:.1}}
+.exits{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px;margin-top:10px}
+.ec{background:white;border-radius:12px;padding:11px;border:1.5px solid #e8edf5;cursor:pointer}
+.ec.sel{border-color:var(--teal);background:#e1f5f5}.ec.blk{border-color:#fca5a5;background:#fff5f5}
+.ec-h{display:flex;align-items:center;gap:5px;margin-bottom:4px}
+.ec-h svg{width:13px;height:13px;fill:none;stroke-width:2;stroke-linecap:round}
+.ec-nm{font-size:11px;font-weight:700;color:var(--text)}.ec-d{font-size:11px;color:#555}.ec-t{font-size:10px;color:var(--gray)}
+.badge{display:inline-block;font-size:9px;padding:2px 7px;border-radius:10px;margin-top:4px;font-weight:600}
+.bg{background:#dcfce7;color:#166534}.bo{background:#fff7ed;color:#9a3412}.br{background:#fee2e2;color:#991b1b}
+.sos-row{display:flex;gap:8px;padding:10px 14px 0}
+.sos-btn{flex:2;background:var(--red);color:white;border:none;border-radius:12px;padding:13px 8px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Space Grotesk',sans-serif}
+.sos-btn.pulsing{animation:sosp .7s infinite}
+@keyframes sosp{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+.drill-btn{flex:1;background:var(--navy2);color:white;border:none;border-radius:12px;padding:13px 5px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.drill-btn svg{width:14px;height:14px;fill:none;stroke:white;stroke-width:2}
+.asm-row{display:flex;gap:8px;padding:0 14px;margin-top:8px}
+.asm-card{flex:1;background:white;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;border:1px solid #e8edf5}
+.asm-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.asm-icon svg{width:16px;height:16px;fill:none;stroke:white;stroke-width:2}
+.ftabs{display:flex;gap:6px;padding:12px 14px 0;flex-wrap:wrap}
+.ft{flex:1;min-width:60px;text-align:center;padding:8px 3px;background:white;border:1px solid #e8edf5;border-radius:10px;font-size:11px;color:var(--gray);cursor:pointer;font-weight:500}
+.ft.on{background:var(--navy);color:white;border-color:var(--navy)}
+.fsvg{margin:10px 14px 0;border-radius:var(--r);overflow:hidden;border:1px solid #e8edf5;background:white}
+.fsvg svg{width:100%;height:auto;display:block}
+.rcard{margin:10px 14px 0;background:white;border-radius:var(--r);padding:13px;border:1px solid #e8edf5}
+.rcard-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.rcard-title svg{width:14px;height:14px;fill:none;stroke:var(--teal);stroke-width:2}
+.si{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #f1f5f9}.si:last-child{border:none}
+.snum{width:20px;height:20px;min-width:20px;background:#dbeafe;color:#1e40af;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.stxt{font-size:12px;color:var(--text);line-height:1.5;padding-top:2px}
+.etabs{display:flex;gap:7px;padding:12px 14px 0;overflow-x:auto}.etabs::-webkit-scrollbar{display:none}
+.et{flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid #e8edf5;background:white;color:var(--gray)}
+.et.on.fire{background:#7f1d1d;color:white;border-color:#7f1d1d}
+.et.on.earthquake{background:#78350f;color:white;border-color:#78350f}
+.et.on.storm{background:#1e3a8a;color:white;border-color:#1e3a8a}
+.eg{display:none;padding:0 14px;margin-top:10px}.eg.on{display:block}
+.eg-hero{border-radius:var(--r);padding:16px;margin-bottom:10px}
+.eg-hero.fire{background:#7f1d1d}.eg-hero.earthquake{background:#78350f}.eg-hero.storm{background:#1e3a8a}
+.eg-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:white;margin-bottom:2px}
+.eg-sub{font-size:12px;color:rgba(255,255,255,.7)}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.ac{background:white;border-radius:12px;padding:10px;border:1px solid #e8edf5}
+.ac-n{font-size:20px;font-weight:800;color:#e8edf5;font-family:'Space Grotesk',sans-serif;line-height:1;margin-bottom:2px}
+.ac-t{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:2px}.ac-b{font-size:11px;color:#555;line-height:1.5}
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.do-box{background:#dcfce7;border-radius:10px;padding:10px}.dn-box{background:#fee2e2;border-radius:10px;padding:10px}
+.do-box b,.dn-box b{font-size:11px;font-weight:700;display:block;margin-bottom:4px}
+.do-box b{color:#166534}.dn-box b{color:#991b1b}.di{font-size:11px;color:#1a3558;margin-bottom:3px}
+.tip{border-radius:10px;padding:10px;margin-top:8px;font-size:12px;line-height:1.6}
+.arow{display:flex;align-items:center;gap:10px;background:white;border-radius:11px;padding:11px 12px;border:1px solid #e8edf5;margin-bottom:8px}
+.arow svg{width:18px;height:18px;fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+.at-lbl{flex:1}.at-lbl-title{font-size:13px;font-weight:500;color:var(--text)}.at-lbl-sub{font-size:10px;color:var(--gray)}
+.tgl{width:38px;height:20px;background:#e2e8f0;border-radius:10px;position:relative;cursor:pointer;flex-shrink:0}
+.tgl.on{background:var(--teal)}.tgl::after{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:white;transition:left .2s}.tgl.on::after{left:20px}
+.test-btn{width:100%;background:var(--teal);color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px}
+.test-btn svg{width:18px;height:18px;fill:none;stroke:white;stroke-width:2}
+.alog{background:#0d1f3c;border-radius:10px;padding:10px 12px;font-family:monospace;font-size:11px;color:#4ade80;max-height:120px;overflow-y:auto;margin-top:10px;line-height:1.9}
+.sg{margin:0 14px 3px;border-radius:var(--r);overflow:hidden;border:1px solid #e8edf5}
+.sr{display:flex;align-items:center;gap:10px;padding:11px 12px;background:white;border-bottom:1px solid #f1f5f9}.sr:last-child{border:none}
+.sr svg{width:16px;height:16px;fill:none;stroke:var(--gray);stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+.sr-lbl{flex:1;font-size:13px;color:var(--text)}.sr-val{font-size:11px;color:var(--gray)}.sr-val.g{color:#16a34a;font-weight:600}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;justify-content:center}
+.overlay.on{display:flex}
+.sheet{background:white;border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:16px 16px 28px;max-height:88vh;overflow-y:auto}
+.sheet-handle{width:32px;height:4px;background:#e2e8f0;border-radius:2px;margin:0 auto 14px}
+.sheet-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.sheet-sub{font-size:12px;color:var(--gray);margin-bottom:14px}
+.fl{display:flex;flex-direction:column;gap:12px}
+.fg label{font-size:12px;font-weight:600;color:var(--navy);display:block;margin-bottom:4px}
+.fi{width:100%;background:white;border:1.5px solid #e8edf5;border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);outline:none;font-family:'Inter',sans-serif}
+.fi:focus{border-color:var(--teal)}
+.save-btn{width:100%;background:var(--navy);color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;margin-top:6px}
+.info-tip{background:#eff6ff;border-radius:10px;padding:11px;font-size:12px;color:#1e40af;line-height:1.7}
+.beep-ov{display:none;position:fixed;inset:0;background:var(--red);z-index:400;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center}
+.beep-ov.on{display:flex}
+.beep-icon{width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:sosp .7s infinite}
+.beep-icon svg{width:52px;height:52px;fill:none;stroke:white;stroke-width:1.6;stroke-linecap:round}
+.beep-title{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;color:white;margin-bottom:8px}
+.beep-msg{font-size:14px;color:rgba(255,255,255,.88);line-height:1.7;max-width:300px;margin-bottom:24px}
+.beep-dismiss{background:white;color:var(--red);border:none;border-radius:12px;padding:13px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif}
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--navy);color:white;font-size:12px;font-weight:600;padding:9px 18px;border-radius:20px;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;max-width:92vw;text-align:center}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ═══ PAYMENT GATE ═══ -->
+<div id="paygate">
+  <div class="pg-logo"><svg viewBox="0 0 24 24"><path d="M12 2L3 7l9 5 9-5-9-5"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
+  <div class="pg-title">SafeEvac</div>
+  <div class="pg-tagline">Universal GPS evacuation planning for ANY building in India</div>
+  <div class="pg-stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span>Schools, offices, hospitals, malls — anywhere</span></div>
+
+  <div class="price-hero">
+    <div class="price-top">
+      <div><div class="price-row"><div class="price-amount">&#8377;500</div><div style="font-size:14px;color:var(--gray);margin-bottom:2px">&nbsp;only</div></div><div class="price-slash">&#8377;2,000 &mdash; 75% launch offer</div></div>
+      <div class="price-badge">&#10003;&nbsp;Lifetime access</div>
+    </div>
+    <ul class="features">
+      <li><div class="feat-tick"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Works for ANY building — enter your own GPS coordinates</li>
+      <li><div class="feat-tick"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Auto-detect GPS or type coordinates manually</li>
+      <li><div class="feat-tick"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Floor-by-floor evacuation plan generated for YOUR building</li>
+      <li><div class="feat-tick"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Fire, Earthquake &amp; Storm protocols included</li>
+      <li><div class="feat-tick"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Beep alarm + SMS + WhatsApp emergency alerts</li>
+      <li><div class="feat-tick"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></div>Works offline once set up — no internet needed in emergency</li>
+    </ul>
+    <div class="upi-label"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Pay to this UPI ID</div>
+    <div class="upi-id-row"><div class="upi-id-texts"><div class="upi-id-tag">UPI ID</div><div class="upi-id-value">7678337699@upi</div></div><button class="copy-btn" id="copyBtn" onclick="copyUPI()">Copy</button></div>
+    <div class="qr-wrapper">
+      <div class="qr-box"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAADYElEQVR4nO2cS4rjMBCGvxobeilDH2COIt9smCP1Deyj5AAD8rJBpmahZ3pgoBNwp53yIshOPpBIpR6/ShHl09f64/MMGGSQQd8U2iRfM3t6YZ3KiE1EZqB8aDx6egYdC43AEAEQtglNI0aU7VXFvwFsrxG/pNGh0zPoi6D822dQ1ok0ktm9C+s0KLhI8xbfZE0G3e4j2rUL/jKi67yLrgIKu3zh9Aw6HLqyCBfH5CN8eI0CILig/5jEg6/JoPshVY0Ag4JTZf35LvgwqOplRBcAnGoefYs1GXQ7tKcqArYR/GVEfl1ekk4hMyDzNsIqIiLT8dMz6FAI7a4AyUfAUJ8NV7eqqsuDr8mgO6Et5xIyM6jqRUQX9y7ALqngoAgV5iPODyUfUZKEQfEau2fpM16z38Cbjzg7RIoVPlTZwbXwkG1DFwbVxUXy6MHXZNA9UPEHVNvQmkeElkxALj2CWcT5oW1Mv32RaVD9Pe2iGooutcqIzMl5RLKi+fhrMuhmiFRN+OIN0rOFvsIAF9HF1Xzjwddk0D0QOV0I5LiwtOozNOmKZBEWNc4PUVSIahYai22UZCJnm1WZMIs4M5R9xOKKiu1De0P7BquWcppFnBmilBQxjxanKa0otpELz5xCWB5xdqiPFenb77QH6EXtQAknD74mg+6BOhUiOwAXu70O0n4oFHHKosbZoT5WpFutZtGFE+iDyIOvyaB7IEqRqaXcDNAcBTmSVB9hecTZodJDtb1G8W8guFpgdI24QxSvqecuPvyaDLoH4sozqF7VoUWP8HWHw/KI00NFoaoNdXVf/EMkadvkZhGnhq7cQ+mP6PXszkAilkecHyoneDaB3Ik/qODeRX0A/LKPigsI7g8Clkc8CZSKi3xQh3UaNJ/q2V6KermNH6HjpmfQYVC3G54fJBU71jeqegmmWT4BdN2L3bfWNQGbpmJbf8QzQO1suIul4xJI8QN2UQ2lU3vZ7Gz4E0C1VQooTXa9SClzuv2i6Rl0KJSyRcl/GbCPyraLphGAvwisE/kUKC4cOj2DDodovVFFirh61p32dNYx8wzQtUW0ra3cTdXnk2YRTwHVTW/V1iTRn81wfWuddd4+B9TOhovInBQqytkMKJGkJZ/fYE0G3QqJ/XuhQQYZ9J/rLwkBIKHBJH8oAAAAAElFTkSuQmCC" alt="UPI QR code to pay 500 rupees to 7678337699 at upi"></div>
+      <div class="qr-caption">Scan with any UPI app<br><strong>Amount: &#8377;500 &middot; 7678337699@upi</strong></div>
+    </div>
+    <div class="apps-label">Or tap to open your UPI app directly</div>
+    <div class="upi-apps-grid">
+      <div class="upi-app" onclick="openUPI('gpay')"><div class="upi-app-icon">&#128242;</div><div class="upi-app-name">Google Pay</div></div>
+      <div class="upi-app" onclick="openUPI('phonepe')"><div class="upi-app-icon">&#9899;</div><div class="upi-app-name">PhonePe</div></div>
+      <div class="upi-app" onclick="openUPI('paytm')"><div class="upi-app-icon">&#128179;</div><div class="upi-app-name">Paytm</div></div>
+      <div class="upi-app" onclick="openUPI('bhim')"><div class="upi-app-icon">&#127470;&#127475;</div><div class="upi-app-name">BHIM UPI</div></div>
+    </div>
+    <div class="txn-box">
+      <div class="txn-box-title">Enter transaction ID to unlock</div>
+      <div class="txn-box-sub">After paying, copy the UPI reference number and enter it below</div>
+      <div id="msgBox" class="msg"><svg id="msgIcon" viewBox="0 0 24 24"></svg><span id="msgText"></span></div>
+      <input class="txn-input" id="txnIn" placeholder="e.g. T2506301234" maxlength="40">
+      <button class="activate-btn" onclick="activateWithTxn()"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Activate SafeEvac Now</button>
+    </div>
+    <div class="trust-row">
+      <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Secure UPI</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Instant access</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>Any building</div>
+    </div>
+  </div>
+  <div class="footer-note">Problems? WhatsApp: <strong>7678337699</strong><br>UPI ID: <strong>7678337699@upi</strong> &middot; &#8377;500 one-time</div>
+</div>
+
+<!-- ═══ ONBOARDING — set up YOUR building ═══ -->
+<div id="onboarding">
+  <div class="ob-header">
+    <div class="ob-header-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <h1>Set up your building</h1>
+    <p>This works for ANY building — school, office, hospital, mall, apartment.<br>Enter details once. Takes 2 minutes.</p>
+  </div>
+  <div class="ob-body">
+
+    <div class="ob-section">
+      <div class="ob-section-title"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Building details</div>
+      <div class="ob-field"><label>Building / organisation name</label><input class="ob-input" id="obName" placeholder="e.g. ABC Public School, XYZ Hospital, Tower-3 Apartments"></div>
+      <div class="ob-field"><label>Full address</label><input class="ob-input" id="obAddr" placeholder="e.g. Sector 12, Dwarka, New Delhi"></div>
+      <div class="ob-field">
+        <label>Building type</label>
+        <div class="building-type-grid">
+          <div class="bt-option sel" data-type="school" onclick="selectType(this)"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><div class="bt-option-name">School / College</div></div>
+          <div class="bt-option" data-type="office" onclick="selectType(this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg><div class="bt-option-name">Office building</div></div>
+          <div class="bt-option" data-type="hospital" onclick="selectType(this)"><svg viewBox="0 0 24 24"><path d="M12 2L3 7l9 5 9-5-9-5z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg><div class="bt-option-name">Hospital</div></div>
+          <div class="bt-option" data-type="mall" onclick="selectType(this)"><svg viewBox="0 0 24 24"><path d="M3 9l1-5h16l1 5M4 9v10a1 1 0 001 1h14a1 1 0 001-1V9M9 21V13h6v8"/></svg><div class="bt-option-name">Mall / Retail</div></div>
+          <div class="bt-option" data-type="apartment" onclick="selectType(this)"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9h1M9 13h1M14 9h1M14 13h1"/></svg><div class="bt-option-name">Apartment / Residential</div></div>
+          <div class="bt-option" data-type="other" onclick="selectType(this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg><div class="bt-option-name">Other building</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ob-section">
+      <div class="ob-section-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>GPS location</div>
+      <button class="gps-fetch-btn" onclick="fetchGPS()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Auto-detect my current GPS location</button>
+      <div class="gps-result" id="gpsResult"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span id="gpsResultText"></span></div>
+      <div style="font-size:11px;color:var(--gray);text-align:center;margin-bottom:10px">or enter manually (from Google Maps long-press)</div>
+      <div class="ob-row2">
+        <div class="ob-field"><label>Latitude</label><input class="ob-input" id="obLat" type="number" step="0.0001" placeholder="e.g. 28.6139"></div>
+        <div class="ob-field"><label>Longitude</label><input class="ob-input" id="obLng" type="number" step="0.0001" placeholder="e.g. 77.2090"></div>
+      </div>
+    </div>
+
+    <div class="ob-section">
+      <div class="ob-section-title"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Building structure</div>
+      <div class="ob-field">
+        <label>Number of floors (including ground floor)</label>
+        <div class="floor-stepper">
+          <button class="fs-btn" onclick="changeFloors(-1)">&minus;</button>
+          <div class="fs-val" id="floorCountVal">3</div>
+          <button class="fs-btn" onclick="changeFloors(1)">+</button>
+        </div>
+      </div>
+      <div class="ob-field"><label>Approx. number of people in building (peak time)</label><input class="ob-input" id="obOccupancy" type="number" placeholder="e.g. 800"></div>
+    </div>
+
+    <div class="ob-section">
+      <div class="ob-section-title"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/></svg>Emergency contact</div>
+      <div class="ob-field"><label>Contact person name</label><input class="ob-input" id="obContact" placeholder="e.g. Safety Officer / Manager name"></div>
+      <div class="ob-field"><label>Emergency mobile number</label><input class="ob-input" id="obPhone" type="tel" placeholder="+91 XXXXXXXXXX"></div>
+    </div>
+
+    <button class="continue-btn" onclick="generatePlan()"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Generate my evacuation plan</button>
+    <div class="skip-link" onclick="skipOnboarding()">Skip for now — use a sample building</div>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app">
+  <div class="topbar">
+    <div class="tb-logo"><svg viewBox="0 0 24 24"><path d="M12 2L3 7l9 5 9-5-9-5"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
+    <div style="flex:1"><div class="tb-title" id="tbTitle">SafeEvac</div><div class="tb-sub" id="tbSub">—</div></div>
+    <div class="live-badge">GPS LIVE</div>
+  </div>
+  <div class="emerg-bar" id="emergBar">
+    <svg style="width:17px;height:17px;fill:none;stroke:white;stroke-width:2;flex-shrink:0" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div class="emerg-bar-txt" id="emergTxt">SOS ACTIVE &mdash; Emergency contact notified</div>
+    <button class="emerg-bar-x" onclick="document.getElementById('emergBar').classList.remove('on')">&#10005;</button>
+  </div>
+  <div class="body">
+    <div id="pmap" class="pane on">
+      <div class="gps-strip">
+        <div class="gpill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><div><div class="gpill-lbl">Live position</div><div class="gpill-val" id="lcoord">&mdash;</div></div><div class="gdot"></div></div>
+        <div class="gpill" style="flex:.85"><svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg><div><div class="gpill-lbl">Nearest exit</div><div class="gpill-val" id="nexit">Main exit</div></div></div>
+      </div>
+      <div class="map-box"><iframe class="map-iframe" id="mapFrame" src="" title="Building location map" loading="lazy"></iframe><div class="map-badge" id="mapBadge">&mdash;</div><div class="you-wrap"><div class="you-dot"><div class="you-ring"></div></div></div></div>
+      <div class="sec-lbl">Evacuation exits</div>
+      <div class="exits" id="exitsGrid"></div>
+      <div class="sos-row">
+        <button class="sos-btn" id="sosBtn" onclick="triggerSOS()"><svg style="width:18px;height:18px;fill:none;stroke:white;stroke-width:2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Emergency SOS &mdash; Alert all</button>
+        <button class="drill-btn" onclick="triggerBeep('drill')"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg> Drill</button>
+      </div>
+      <div class="sec-lbl">Assembly points</div>
+      <div class="asm-row" id="asmRow"></div>
+    </div>
+    <div id="pfloors" class="pane">
+      <div class="ftabs" id="floorTabs"></div>
+      <div class="fsvg" id="fsvg"></div>
+      <div class="rcard"><div class="rcard-title"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span id="fTitle">&mdash;</span></div><div id="fSteps"></div></div>
+    </div>
+    <div id="pemerg" class="pane">
+      <div class="sec-lbl">Emergency type</div>
+      <div class="etabs"><div class="et fire on" onclick="showEmerg('fire',this)">&#128293; Fire</div><div class="et earthquake" onclick="showEmerg('earthquake',this)">&#127757; Earthquake</div><div class="et storm" onclick="showEmerg('storm',this)">&#127786; Storm</div></div>
+      <div class="eg on" id="eg-fire"><div class="eg-hero fire"><div class="eg-title">Fire emergency</div><div class="eg-sub">Stay low &middot; No lifts &middot; Exit now</div></div><div class="agrid"><div class="ac"><div class="ac-n">01</div><div class="ac-t">Raise the alarm</div><div class="ac-b">Break fire alarm glass or shout FIRE. Every second counts.</div></div><div class="ac"><div class="ac-n">02</div><div class="ac-t">Stay low</div><div class="ac-b">Crawl below smoke. Cover nose with wet cloth.</div></div><div class="ac"><div class="ac-n">03</div><div class="ac-t">Stairs only</div><div class="ac-b">NEVER use elevator. Use nearest staircase.</div></div><div class="ac"><div class="ac-n">04</div><div class="ac-t">Close doors</div><div class="ac-b">Closing doors slows fire spread by 15+ minutes.</div></div><div class="ac"><div class="ac-n">05</div><div class="ac-t">Assembly point</div><div class="ac-b">Wait at designated point. Headcount taken.</div></div><div class="ac"><div class="ac-n">06</div><div class="ac-t">Call 101</div><div class="ac-b">Designated staff calls Fire Brigade 101 immediately.</div></div></div><div class="dd"><div class="do-box"><b>&#10003; Do</b><div class="di">&#10003; Use extinguisher on small fire</div><div class="di">&#10003; Feel door before opening</div><div class="di">&#10003; Take headcount at assembly</div><div class="di">&#10003; Call 101 immediately</div></div><div class="dn-box"><b>&#10007; Don't</b><div class="di">&#10007; Use the lift</div><div class="di">&#10007; Go back for belongings</div><div class="di">&#10007; Open door without feeling</div><div class="di">&#10007; Panic or run</div></div></div></div>
+      <div class="eg" id="eg-earthquake"><div class="eg-hero earthquake"><div class="eg-title">Earthquake</div><div class="eg-sub">Drop &middot; Cover &middot; Hold &mdash; then evacuate</div></div><div class="agrid"><div class="ac"><div class="ac-n">01</div><div class="ac-t">Drop, Cover, Hold</div><div class="ac-b">Drop to knees, cover head under desk, hold until shaking stops.</div></div><div class="ac"><div class="ac-n">02</div><div class="ac-t">Stay inside</div><div class="ac-b">Do NOT run outside during shaking.</div></div><div class="ac"><div class="ac-n">03</div><div class="ac-t">Away from windows</div><div class="ac-b">Move away from glass, heavy shelves.</div></div><div class="ac"><div class="ac-n">04</div><div class="ac-t">After shaking</div><div class="ac-b">Check injuries, close gas, move outside via stairs.</div></div><div class="ac"><div class="ac-n">05</div><div class="ac-t">Inspect stairs</div><div class="ac-b">Check for cracks before descending.</div></div><div class="ac"><div class="ac-n">06</div><div class="ac-t">Aftershocks</div><div class="ac-b">Stay at assembly point until cleared.</div></div></div><div class="dd"><div class="do-box"><b>&#10003; Do</b><div class="di">&#10003; Drop-Cover-Hold</div><div class="di">&#10003; Turn off gas after</div><div class="di">&#10003; Stay at assembly point</div><div class="di">&#10003; Call NDMA 1078</div></div><div class="dn-box"><b>&#10007; Don't</b><div class="di">&#10007; Stand in doorways</div><div class="di">&#10007; Run outside while shaking</div><div class="di">&#10007; Use lift</div><div class="di">&#10007; Re-enter until cleared</div></div></div></div>
+      <div class="eg" id="eg-storm"><div class="eg-hero storm"><div class="eg-title">Storm / cyclone</div><div class="eg-sub">Move inside &middot; Stay low</div></div><div class="agrid"><div class="ac"><div class="ac-n">01</div><div class="ac-t">Everyone inside</div><div class="ac-b">Stop outdoor activity, move indoors.</div></div><div class="ac"><div class="ac-n">02</div><div class="ac-t">Lowest floor</div><div class="ac-b">Move to interior rooms away from windows.</div></div><div class="ac"><div class="ac-n">03</div><div class="ac-t">Cut electrics</div><div class="ac-b">Disconnect equipment, main switch off if flooding.</div></div><div class="ac"><div class="ac-n">04</div><div class="ac-t">No terrace/roof</div><div class="ac-b">No one on terrace or balcony.</div></div><div class="ac"><div class="ac-n">05</div><div class="ac-t">Notify contacts</div><div class="ac-b">SMS all relevant people about the situation.</div></div><div class="ac"><div class="ac-n">06</div><div class="ac-t">Monitor NDMA</div><div class="ac-b">Watch for official all-clear.</div></div></div><div class="dd"><div class="do-box"><b>&#10003; Do</b><div class="di">&#10003; Shelter in interior rooms</div><div class="di">&#10003; Keep torch ready</div><div class="di">&#10003; Fill water before storm</div><div class="di">&#10003; Call NDMA 1078</div></div><div class="dn-box"><b>&#10007; Don't</b><div class="di">&#10007; Open windows</div><div class="di">&#10007; Go to terrace</div><div class="di">&#10007; Touch wet switches</div><div class="di">&#10007; Go outside in storm</div></div></div></div>
+    </div>
+    <div id="palerts" class="pane">
+      <div class="sec-lbl">Emergency contact</div>
+      <div style="padding:0 14px;display:flex;flex-direction:column;gap:10px">
+        <div class="fg"><label>Contact name</label><input class="fi" id="cName" placeholder="Safety officer name"></div>
+        <div class="fg"><label>Mobile number</label><input class="fi" id="cPhone" type="tel" placeholder="+91 XXXXXXXXXX"></div>
+      </div>
+      <div class="sec-lbl">Alert channels</div>
+      <div style="padding:0 14px">
+        <div class="arow"><svg viewBox="0 0 24 24" style="stroke:#b91c1c"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg><div class="at-lbl"><div class="at-lbl-title">Loud beep alarm</div><div class="at-lbl-sub">Emergency siren through speaker</div></div><div class="tgl on" id="tBeep" onclick="this.classList.toggle('on')"></div></div>
+        <div class="arow"><svg viewBox="0 0 24 24" style="stroke:#0f7173"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/></svg><div class="at-lbl"><div class="at-lbl-title">SMS to contact</div><div class="at-lbl-sub">Opens SMS with GPS location</div></div><div class="tgl on" id="tSMS" onclick="this.classList.toggle('on')"></div></div>
+        <div class="arow"><svg viewBox="0 0 24 24" style="stroke:#0a7c59"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><div class="at-lbl"><div class="at-lbl-title">WhatsApp alert</div><div class="at-lbl-sub">Opens WhatsApp with GPS message</div></div><div class="tgl on" id="tWA" onclick="this.classList.toggle('on')"></div></div>
+        <div class="arow"><svg viewBox="0 0 24 24" style="stroke:#6d28d9"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><div class="at-lbl"><div class="at-lbl-title">Device vibration</div><div class="at-lbl-sub">Strong vibration on emergency</div></div><div class="tgl on" id="tVib" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div style="padding:12px 14px 0">
+        <button class="test-btn" onclick="triggerBeep('test')"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>Test beep alarm</button>
+        <div class="alog" id="alog">[ SafeEvac ready ]</div>
+      </div>
+    </div>
+    <div id="psettings" class="pane">
+      <div style="padding:14px 14px 0"><button onclick="document.getElementById('setupModal').classList.add('on')" style="width:100%;background:var(--navy);color:white;border:none;border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif">+ Edit building details</button></div>
+      <div class="sec-lbl">Building details</div>
+      <div class="sg">
+        <div class="sr"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span class="sr-lbl" id="sr1">&mdash;</span></div>
+        <div class="sr"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="sr-lbl" id="sr2">&mdash;</span></div>
+        <div class="sr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span class="sr-lbl" id="sr3">&mdash;</span><span class="sr-val g">Live</span></div>
+        <div class="sr"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg><span class="sr-lbl" id="sr4">&mdash;</span></div>
+      </div>
+      <div class="sec-lbl">License</div>
+      <div class="sg">
+        <div class="sr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="sr-lbl">SafeEvac v2.0 &mdash; Universal</span><span class="sr-val g">Active</span></div>
+        <div class="sr"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg><span class="sr-lbl">Support: WhatsApp 7678337699</span></div>
+      </div>
+      <div style="padding:12px 14px 0">
+        <button onclick="signOut()" style="width:100%;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;border-radius:10px;padding:11px;font-size:12px;font-weight:600;cursor:pointer">Sign out / set up a different building</button>
+      </div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" onclick="swTab('map',this)"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg><span>Map</span></div>
+    <div class="tab" onclick="swTab('floors',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg><span>Floors</span></div>
+    <div class="tab" onclick="swTab('emerg',this)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg><span>Emergency</span></div>
+    <div class="tab" onclick="swTab('alerts',this)"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span>Alerts</span></div>
+    <div class="tab" onclick="swTab('settings',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg><span>Settings</span></div>
+  </div>
+</div>
+
+<div class="overlay" id="setupModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Edit building details</div>
+    <div class="fl">
+      <div class="fg"><label>Building name</label><input class="fi" id="eName"></div>
+      <div class="fg"><label>Address</label><input class="fi" id="eAddr"></div>
+      <div class="fg"><label>Latitude</label><input class="fi" id="eLat" type="number" step="0.0001"></div>
+      <div class="fg"><label>Longitude</label><input class="fi" id="eLng" type="number" step="0.0001"></div>
+      <div class="fg"><label>Number of floors</label><input class="fi" id="eFloors" type="number" min="1" max="20"></div>
+      <div class="fg"><label>Contact phone</label><input class="fi" id="ePhone" type="tel"></div>
+      <button class="save-btn" onclick="saveEdit()">Save changes</button>
+      <div style="text-align:center;font-size:12px;color:var(--gray);cursor:pointer;margin-top:4px" onclick="document.getElementById('setupModal').classList.remove('on')">Cancel</div>
+    </div>
+  </div>
+</div>
+
+<div class="beep-ov" id="beepOv">
+  <div class="beep-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div>
+  <div class="beep-title" id="bTitle">EMERGENCY ALERT</div>
+  <div class="beep-msg" id="bMsg">All occupants proceed to assembly point immediately.</div>
+  <button class="beep-dismiss" onclick="dismissBeep()">Dismiss alarm</button>
+</div>
+
+<div class="spin-ov" id="spinOv"><div class="spinner"></div><div class="spin-txt" id="spinTxt">Activating...</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var UPI_ID='7678337699@upi';
+var building={name:'',addr:'',lat:28.6139,lng:77.2090,type:'school',floors:3,occupancy:0,contact:'',phone:''};
+var liveLat=28.6139, liveLng=77.2090, sosOn=false, selectedType='school';
+
+/* ═══ PAYMENT ═══ */
+function copyUPI(){
+  var btn=document.getElementById('copyBtn');
+  try{navigator.clipboard.writeText(UPI_ID).then(function(){btn.textContent='Copied!';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+  catch(e){var el=document.createElement('textarea');el.value=UPI_ID;document.body.appendChild(el);el.select();try{document.execCommand('copy');}catch(ex){}document.body.removeChild(el);btn.textContent='Copied!';}
+}
+function openUPI(app){
+  var nm=encodeURIComponent('SafeEvac');var tn=encodeURIComponent('SafeEvac App Rs500');
+  var urls={gpay:'gpay://upi/pay?pa='+UPI_ID+'&pn='+nm+'&am=500&cu=INR&tn='+tn,phonepe:'phonepe://pay?pa='+UPI_ID+'&pn='+nm+'&am=500&cu=INR&tn='+tn,paytm:'paytmmp://pay?pa='+UPI_ID+'&pn='+nm+'&am=500&cu=INR',bhim:'upi://pay?pa='+UPI_ID+'&pn='+nm+'&am=500&cu=INR&tn='+tn};
+  try{window.location.href=urls[app];}catch(e){}
+  setTimeout(function(){showMsg('ok','After paying, enter your transaction ID below.');},1800);
+}
+function activateWithTxn(){
+  var txn=document.getElementById('txnIn').value.trim();
+  if(!txn||txn.length<3){showMsg('err','Please enter your UPI transaction ID first.');return;}
+  document.getElementById('spinOv').classList.add('on');
+  document.getElementById('spinTxt').textContent='Activating SafeEvac...';
+  setTimeout(function(){
+    document.getElementById('spinOv').classList.remove('on');
+    try{localStorage.setItem('se_paid','1');localStorage.setItem('se_txn',txn);}catch(e){}
+    showOnboarding();
+  },1200);
+}
+function showMsg(type,text){
+  var box=document.getElementById('msgBox'),icon=document.getElementById('msgIcon'),txt=document.getElementById('msgText');
+  box.className='msg show '+type;txt.textContent=text;
+  if(type==='ok'){icon.innerHTML='<polyline points="20 6 9 17 4 12"/>';icon.style.stroke='#166534';}
+  else{icon.innerHTML='<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';icon.style.stroke='#991b1b';}
+  setTimeout(function(){box.classList.remove('show');},5000);
+}
+
+/* ═══ ONBOARDING ═══ */
+function showOnboarding(){
+  document.getElementById('paygate').style.display='none';
+  document.getElementById('onboarding').classList.add('show');
+  try{
+    var existing=localStorage.getItem('se_building');
+    if(existing){
+      var b=JSON.parse(existing);
+      document.getElementById('obName').value=b.name||'';
+      document.getElementById('obAddr').value=b.addr||'';
+      document.getElementById('obLat').value=b.lat||'';
+      document.getElementById('obLng').value=b.lng||'';
+      document.getElementById('obOccupancy').value=b.occupancy||'';
+      document.getElementById('obContact').value=b.contact||'';
+      document.getElementById('obPhone').value=b.phone||'';
+      if(b.floors)document.getElementById('floorCountVal').textContent=b.floors;
+      if(b.type){
+        document.querySelectorAll('.bt-option').forEach(function(o){o.classList.remove('sel');if(o.dataset.type===b.type){o.classList.add('sel');selectedType=b.type;}});
+      }
+    }
+  }catch(e){}
+}
+function selectType(el){
+  document.querySelectorAll('.bt-option').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
+  selectedType=el.dataset.type;
+}
+function changeFloors(delta){
+  var el=document.getElementById('floorCountVal');
+  var v=parseInt(el.textContent)+delta;
+  if(v<1)v=1;if(v>20)v=20;
+  el.textContent=v;
+}
+function fetchGPS(){
+  var resultBox=document.getElementById('gpsResult'),resultText=document.getElementById('gpsResultText');
+  if(navigator.geolocation){
+    resultText.textContent='Detecting your location...';
+    resultBox.classList.add('show');
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var lat=pos.coords.latitude.toFixed(5),lng=pos.coords.longitude.toFixed(5);
+      document.getElementById('obLat').value=lat;
+      document.getElementById('obLng').value=lng;
+      resultText.textContent='Location detected: '+lat+'°N, '+lng+'°E';
+    },function(err){
+      resultText.textContent='Could not detect GPS. Please enter coordinates manually below.';
+    },{enableHighAccuracy:true,timeout:10000});
+  } else {
+    resultBox.classList.add('show');
+    resultText.textContent='GPS not supported on this device. Enter coordinates manually.';
+  }
+}
+function skipOnboarding(){
+  document.getElementById('obName').value='Sample Building';
+  document.getElementById('obAddr').value='Connaught Place, New Delhi';
+  document.getElementById('obLat').value='28.6315';
+  document.getElementById('obLng').value='77.2167';
+  document.getElementById('obContact').value='Building Manager';
+  document.getElementById('obPhone').value='+91 7678337699';
+  generatePlan();
+}
+function generatePlan(){
+  var name=document.getElementById('obName').value.trim();
+  var addr=document.getElementById('obAddr').value.trim();
+  var lat=parseFloat(document.getElementById('obLat').value);
+  var lng=parseFloat(document.getElementById('obLng').value);
+  var floors=parseInt(document.getElementById('floorCountVal').textContent);
+  var occupancy=document.getElementById('obOccupancy').value.trim();
+  var contact=document.getElementById('obContact').value.trim();
+  var phone=document.getElementById('obPhone').value.trim();
+
+  if(!name){toast('Please enter the building name');return;}
+  if(isNaN(lat)||isNaN(lng)){toast('Please enter or detect GPS coordinates');return;}
+
+  building={name:name,addr:addr,lat:lat,lng:lng,type:selectedType,floors:floors,occupancy:occupancy,contact:contact,phone:phone};
+  liveLat=lat;liveLng=lng;
+
+  try{localStorage.setItem('se_building',JSON.stringify(building));}catch(e){}
+
+  document.getElementById('onboarding').classList.remove('show');
+  buildAppFromData();
+  document.getElementById('app').classList.add('show');
+  toast('Evacuation plan generated for '+name);
+  startGPS();
+}
+
+/* ═══ BUILD APP DYNAMICALLY FROM BUILDING DATA ═══ */
+function buildAppFromData(){
+  document.getElementById('tbTitle').textContent=building.name;
+  document.getElementById('tbSub').textContent=building.addr||'Configured';
+  document.getElementById('mapBadge').textContent=building.name;
+  document.getElementById('lcoord').textContent=building.lat.toFixed(4)+'°N · '+building.lng.toFixed(4)+'°E';
+  document.getElementById('mapFrame').src='https://www.openstreetmap.org/export/embed.html?bbox='+(building.lng-0.004)+'%2C'+(building.lat-0.003)+'%2C'+(building.lng+0.004)+'%2C'+(building.lat+0.003)+'&layer=mapnik&marker='+building.lat+'%2C'+building.lng;
+
+  document.getElementById('sr1').textContent=building.name;
+  document.getElementById('sr2').textContent=building.addr||'—';
+  document.getElementById('sr3').textContent=building.lat.toFixed(4)+'°N · '+building.lng.toFixed(4)+'°E';
+  document.getElementById('sr4').textContent=building.floors+' floors · '+(typeLabel(building.type));
+
+  if(building.contact)document.getElementById('cName').value=building.contact;
+  if(building.phone)document.getElementById('cPhone').value=building.phone;
+
+  buildExitsGrid();
+  buildAssemblyPoints();
+  buildFloorTabs();
+  showFloor(0);
+
+  var logEl=document.getElementById('alog');
+  logEl.innerHTML='[ '+building.name+' configured ]<br>[ '+(building.contact||'Contact')+' — '+(building.phone||'no phone set')+' ]<br>[ GPS: '+building.lat.toFixed(4)+'N '+building.lng.toFixed(4)+'E ]<br>[ '+building.floors+' floor evacuation plan generated ]';
+}
+
+function typeLabel(t){
+  var labels={school:'School/College',office:'Office building',hospital:'Hospital',mall:'Mall/Retail',apartment:'Apartment',other:'Building'};
+  return labels[t]||'Building';
+}
+
+function buildExitsGrid(){
+  var exits=[
+    {name:'Main exit (N)',dist:'25-40m',time:'~20-30 sec',status:'Primary',cls:'bg',stroke:'var(--teal)',path:'M5 12h14M12 5l7 7-7 7'},
+    {name:'Side exit (W)',dist:'40-60m',time:'~30-45 sec',status:'Clear',cls:'bg',stroke:'var(--teal)',path:'M19 12H5M12 19l-7-7 7-7'},
+    {name:'Rear exit (S)',dist:'60-90m',time:'~50-70 sec',status:'Alternate',cls:'bo',stroke:'var(--orange)',path:'M5 12h14M12 5l7 7-7 7'},
+    {name:'Fire exit (E)',dist:'80-110m',time:'~65-90 sec',status:'Backup',cls:'bg',stroke:'var(--red)',path:'M5 12h14M12 5l7 7-7 7'}
+  ];
+  var grid=document.getElementById('exitsGrid');
+  grid.innerHTML='';
+  exits.forEach(function(ex,i){
+    var div=document.createElement('div');
+    div.className='ec'+(i===0?' sel':'');
+    div.onclick=function(){selExit(div,ex.name);};
+    div.innerHTML='<div class="ec-h"><svg viewBox="0 0 24 24" style="stroke:'+ex.stroke+'"><path d="'+ex.path+'"/></svg><span class="ec-nm">'+ex.name+'</span></div><div class="ec-d">'+ex.dist+' away</div><div class="ec-t">'+ex.time+'</div><span class="badge '+ex.cls+'">'+ex.status+'</span>';
+    grid.appendChild(div);
+  });
+}
+
+function buildAssemblyPoints(){
+  var row=document.getElementById('asmRow');
+  row.innerHTML='';
+  var points=[
+    {name:'Point A',loc:'Front open area',cap:Math.round((building.occupancy||500)*0.6),cls:'var(--teal)'},
+    {name:'Point B',loc:'Rear open area',cap:Math.round((building.occupancy||500)*0.4),cls:'var(--navy2)'}
+  ];
+  points.forEach(function(p){
+    var div=document.createElement('div');
+    div.className='asm-card';
+    div.innerHTML='<div class="asm-icon" style="background:'+p.cls+'"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div style="font-size:11px;font-weight:700;color:var(--navy)">'+p.name+' — '+p.loc+'</div><div style="font-size:10px;color:var(--gray)">Capacity '+p.cap+'</div></div>';
+    row.appendChild(div);
+  });
+}
+
+function buildFloorTabs(){
+  var tabsEl=document.getElementById('floorTabs');
+  tabsEl.innerHTML='';
+  for(var i=0;i<building.floors;i++){
+    var label=i===0?'Ground':(i+'F');
+    var tab=document.createElement('div');
+    tab.className='ft'+(i===0?' on':'');
+    tab.textContent=label;
+    tab.onclick=(function(idx,el){return function(){
+      document.querySelectorAll('.ft').forEach(function(t){t.classList.remove('on');});
+      el.classList.add('on');
+      showFloor(idx);
+    };})(i,tab);
+    tabsEl.appendChild(tab);
+  }
+}
+
+function getFloorSteps(floorIdx,totalFloors){
+  if(floorIdx===0){
+    return ["Exit your room into the main corridor","Proceed toward the marked main exit","Move quickly but calmly — do not push","Exit the building through the main door","Proceed to Assembly Point A in the open area outside","Wait for headcount confirmation from the safety officer"];
+  } else {
+    var steps=["Exit your room/office into the corridor","Proceed to the nearest staircase","NEVER use the lift during an emergency","Descend the stairs calmly, holding the handrail","Continue down to ground floor — do not stop on landings"];
+    if(floorIdx===totalFloors-1){
+      steps.unshift("TOP FLOOR: you have the longest evacuation route — start moving immediately");
+    }
+    steps.push("Exit the building through the main door","Proceed to Assembly Point A or B as directed");
+    return steps;
+  }
+}
+
+function buildFloorSVG(floorIdx,totalFloors){
+  var W=440,H=255;
+  var isGround=floorIdx===0;
+  var isTop=floorIdx===totalFloors-1;
+  var rooms=[
+    [20,18,112,56,isGround?'Reception':'Room '+(floorIdx)+'01',"#f8fafc","#94a3b8"],
+    [148,18,115,56,isGround?'Office':'Room '+(floorIdx)+'02',"#f8fafc","#94a3b8"],
+    [278,18,143,56,isGround?'Main hall':'Room '+(floorIdx)+'03',"#f8fafc","#94a3b8"],
+    [20,92,112,68,'Room '+(floorIdx)+'04',"#f8fafc","#94a3b8"],
+    [148,92,115,68,'Room '+(floorIdx)+'05',"#f8fafc","#94a3b8"],
+    [278,92,143,68,'Room '+(floorIdx)+'06',"#f8fafc","#94a3b8"],
+    [20,178,112,58,isGround?'Security':'Room '+(floorIdx)+'07',"#fef9c3","#ca8a04"],
+    [148,178,115,58,isGround?'Lobby':'Room '+(floorIdx)+'08',"#fce7f3","#ec4899"],
+    [278,178,143,58,isTop?'Terrace access':'Room '+(floorIdx)+'09',"#ede9fe","#7c3aed"]
+  ];
+  var corridors=[[0,80,440,14,"#e2e8f0"],[0,168,440,14,"#e2e8f0"],[131,0,14,255,"#e2e8f0"],[275,0,14,255,"#e2e8f0"]];
+  var route=isGround
+    ? {p:"218,126 218,80 131,80 60,80 60,18",c:"#0f7173",w:3}
+    : {p:"218,126 131,126 131,80 60,80 60,0",c:"#0f7173",w:3};
+  var youPos=[218,126];
+  var exits=isGround
+    ? [[48,6,"Main exit"],[0,118,"Side exit"],[355,243,"Rear exit"]]
+    : [[48,6,"Stair 1"],[296,6,"Stair 2"]];
+
+  var s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg"><rect width="'+W+'" height="'+H+'" fill="#e8eef2"/>';
+  corridors.forEach(function(c){s+='<rect x="'+c[0]+'" y="'+c[1]+'" width="'+c[2]+'" height="'+c[3]+'" fill="'+c[4]+'"/>';});
+  rooms.forEach(function(r){
+    s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" rx="4" fill="'+r[4]+'" stroke="'+r[5]+'" stroke-width="1.5"/>';
+    s+='<text x="'+(r[0]+r[2]/2)+'" y="'+(r[1]+r[3]/2)+'" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#1e3a5f" font-family="Inter,sans-serif">'+r[6]+'</text>';
+  });
+  s+='<defs><marker id="a1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0f7173"/></marker></defs>';
+  s+='<polyline points="'+route.p+'" fill="none" stroke="'+route.c+'" stroke-width="'+route.w+'" stroke-linecap="round" marker-end="url(#a1)" opacity=".9"/>';
+  exits.forEach(function(e){
+    s+='<circle cx="'+(e[0]+10)+'" cy="'+(e[1]+10)+'" r="11" fill="#0f7173"/>';
+    s+='<text x="'+(e[0]+10)+'" y="'+(e[1]+26)+'" text-anchor="middle" font-size="8" fill="#0f7173" font-family="Inter,sans-serif">'+e[2]+'</text>';
+  });
+  s+='<circle cx="'+youPos[0]+'" cy="'+youPos[1]+'" r="9" fill="#e85d04" stroke="white" stroke-width="2.5"/>';
+  s+='<text x="'+youPos[0]+'" y="'+(youPos[1]+21)+'" text-anchor="middle" font-size="9" fill="#e85d04" font-family="Inter,sans-serif" font-weight="600">You</text>';
+  return s+'</svg>';
+}
+
+function showFloor(idx){
+  document.getElementById('fsvg').innerHTML=buildFloorSVG(idx,building.floors);
+  var label=idx===0?'Ground floor':(idx+(idx===1?'st':idx===2?'nd':idx===3?'rd':'th')+' floor');
+  document.getElementById('fTitle').textContent=label+' — evacuation steps';
+  var steps=getFloorSteps(idx,building.floors);
+  document.getElementById('fSteps').innerHTML=steps.map(function(s,i){return '<div class="si"><div class="snum">'+(i+1)+'</div><div class="stxt">'+s+'</div></div>';}).join('');
+}
+
+/* ═══ APP INTERACTIONS ═══ */
+function swTab(n,el){document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});document.getElementById('p'+n).classList.add('on');el.classList.add('on');}
+function selExit(c,nm){document.querySelectorAll('.ec').forEach(function(e){e.classList.remove('sel');});c.classList.add('sel');document.getElementById('nexit').textContent=nm;}
+function triggerSOS(){
+  sosOn=!sosOn;var btn=document.getElementById('sosBtn'),bar=document.getElementById('emergBar');
+  if(sosOn){btn.innerHTML='<svg style="width:18px;height:18px;fill:none;stroke:white;stroke-width:2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Cancel SOS';btn.classList.add('pulsing');bar.classList.add('on');triggerBeep('sos');}
+  else{btn.innerHTML='<svg style="width:18px;height:18px;fill:none;stroke:white;stroke-width:2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Emergency SOS — Alert all';btn.classList.remove('pulsing');bar.classList.remove('on');dismissBeep();}
+}
+function triggerBeep(type){
+  var nm=building.name||'this building',c=document.getElementById('cName').value||'Contact';
+  var T={sos:'SOS ACTIVATED',drill:'DRILL IN PROGRESS',test:'TEST ALARM'};
+  var M={sos:'SOS at '+nm+'.\nGPS:'+liveLat.toFixed(4)+'N,'+liveLng.toFixed(4)+'E.\nAll occupants to assembly point now.',drill:'Evacuation drill at '+nm+'. Move to nearest exit. Assembly point.',test:'Test OK. Contact:'+c+'. All channels ACTIVE.'};
+  document.getElementById('bTitle').textContent=T[type]||T.test;
+  document.getElementById('bMsg').textContent=M[type]||M.test;
+  document.getElementById('beepOv').classList.add('on');
+  playBeep(type==='test'?1:type==='drill'?3:6);
+  doVib(type);logAlert(type);
+  if(type==='sos')sendAlerts();
+}
+function playBeep(n){try{var ctx=new(window.AudioContext||window.webkitAudioContext)(),t=ctx.currentTime;for(var i=0;i<n;i++){var o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=i%2===0?900:650;o.type='square';g.gain.setValueAtTime(0.35,t);o.start(t);o.stop(t+0.3);t+=0.42;}}catch(e){}}
+function doVib(t){try{if(navigator.vibrate)navigator.vibrate(t==='sos'?[300,100,300,100,300]:t==='drill'?[200,100,200,100,200]:[200,100,200]);}catch(e){}}
+function sendAlerts(){
+  var p=(document.getElementById('cPhone').value||'').replace(/\D/g,''),nm=building.name||'building',m=encodeURIComponent('EMERGENCY at '+nm+'. GPS:'+liveLat.toFixed(4)+'N,'+liveLng.toFixed(4)+'E. Respond immediately. SafeEvac');
+  if(document.getElementById('tSMS').classList.contains('on'))setTimeout(function(){try{window.open('sms:'+p+'?body='+m,'_blank');}catch(e){}},700);
+  if(document.getElementById('tWA').classList.contains('on'))setTimeout(function(){try{window.open('https://wa.me/'+p+'?text='+m,'_blank');}catch(e){}},1400);
+}
+function logAlert(type){var l=document.getElementById('alog'),t=new Date().toLocaleTimeString('en-IN');l.innerHTML+='<br>['+t+'] '+(type==='sos'?'SOS':type==='drill'?'DRILL':'TEST')+' > '+document.getElementById('cPhone').value;l.scrollTop=l.scrollHeight;}
+function dismissBeep(){document.getElementById('beepOv').classList.remove('on');}
+function showEmerg(type,el){document.querySelectorAll('.eg').forEach(function(g){g.classList.remove('on');});document.querySelectorAll('.et').forEach(function(t){t.classList.remove('on');});document.getElementById('eg-'+type).classList.add('on');el.classList.add('on');}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2800);}
+
+function saveEdit(){
+  document.getElementById('eName').value=building.name;
+  document.getElementById('eAddr').value=building.addr;
+  document.getElementById('eLat').value=building.lat;
+  document.getElementById('eLng').value=building.lng;
+  document.getElementById('eFloors').value=building.floors;
+  document.getElementById('ePhone').value=building.phone;
+}
+function openEditModal(){
+  document.getElementById('eName').value=building.name;
+  document.getElementById('eAddr').value=building.addr;
+  document.getElementById('eLat').value=building.lat;
+  document.getElementById('eLng').value=building.lng;
+  document.getElementById('eFloors').value=building.floors;
+  document.getElementById('ePhone').value=building.phone;
+  document.getElementById('setupModal').classList.add('on');
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var editBtn=document.querySelector('#psettings button');
+});
+
+function signOut(){
+  if(confirm('Set up a different building? Your current building data will be cleared.')){
+    try{localStorage.removeItem('se_building');}catch(e){}
+    document.getElementById('app').classList.remove('show');
+    showOnboarding();
+  }
+}
+
+function startGPS(){
+  if(navigator.geolocation){
+    navigator.geolocation.watchPosition(function(p){
+      liveLat=p.coords.latitude;liveLng=p.coords.longitude;
+      document.getElementById('lcoord').textContent=liveLat.toFixed(5)+'°N · '+liveLng.toFixed(5)+'°E';
+    },function(){simGPS();});
+  } else simGPS();
+}
+function simGPS(){
+  var d=0.4;
+  setInterval(function(){
+    liveLat+=(d*0.000004);
+    if(Math.abs(liveLat-building.lat)>0.0006)d*=-1;
+    document.getElementById('lcoord').textContent=liveLat.toFixed(5)+'°N · '+liveLng.toFixed(5)+'°E';
+  },1800);
+}
+
+/* re-bind setup modal button after app shows */
+var origSaveEdit=saveEdit;
+saveEdit=function(){
+  var n=document.getElementById('eName').value.trim();
+  if(!n){toast('Enter building name');return;}
+  building.name=n;
+  building.addr=document.getElementById('eAddr').value.trim();
+  building.lat=parseFloat(document.getElementById('eLat').value)||building.lat;
+  building.lng=parseFloat(document.getElementById('eLng').value)||building.lng;
+  building.floors=parseInt(document.getElementById('eFloors').value)||building.floors;
+  building.phone=document.getElementById('ePhone').value.trim();
+  liveLat=building.lat;liveLng=building.lng;
+  try{localStorage.setItem('se_building',JSON.stringify(building));}catch(e){}
+  buildAppFromData();
+  document.getElementById('setupModal').classList.remove('on');
+  toast('Building updated');
+};
+
+document.querySelector('#psettings > div > button').onclick=openEditModal;
+
+if(localStorage.getItem('se_paid')){
+  document.getElementById('paygate').style.display='none';
+  try{
+    var savedBuilding=localStorage.getItem('se_building');
+    if(savedBuilding){
+      building=JSON.parse(savedBuilding);
+      liveLat=building.lat;liveLng=building.lng;
+      buildAppFromData();
+      document.getElementById('app').classList.add('show');
+      startGPS();
+    } else {
+      showOnboarding();
+    }
+  }catch(e){showOnboarding();}
+}
+</script>
+</body>
+</html>
